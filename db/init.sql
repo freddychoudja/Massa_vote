@@ -1,0 +1,45 @@
+-- Schema initial pour Massa Vote
+
+CREATE TABLE elections (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  title TEXT NOT NULL,
+  description TEXT,
+  token TEXT NOT NULL UNIQUE,
+  owner_id INTEGER DEFAULT NULL,
+  is_paid INTEGER NOT NULL DEFAULT 0,
+  price_cents INTEGER DEFAULT 0,
+  provider TEXT DEFAULT NULL,
+  theme_color TEXT DEFAULT NULL,
+  logo_url TEXT DEFAULT NULL,
+  created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE candidates (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  election_id INTEGER NOT NULL,
+  name TEXT NOT NULL,
+  token TEXT NOT NULL UNIQUE,
+  votes INTEGER NOT NULL DEFAULT 0,
+  FOREIGN KEY(election_id) REFERENCES elections(id) ON DELETE CASCADE
+);
+
+CREATE TABLE payments (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  election_id INTEGER NOT NULL,
+  candidate_id INTEGER,
+  amount_cents INTEGER NOT NULL,
+  provider TEXT NOT NULL,
+  tx_ref TEXT NOT NULL,
+  status TEXT NOT NULL DEFAULT 'pending',
+  created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+  FOREIGN KEY(election_id) REFERENCES elections(id),
+  FOREIGN KEY(candidate_id) REFERENCES candidates(id)
+);
+
+CREATE TABLE users (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  name TEXT NOT NULL,
+  email TEXT NOT NULL UNIQUE,
+  password_hash TEXT NOT NULL,
+  created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+);
