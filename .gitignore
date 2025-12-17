@@ -1,0 +1,26 @@
+# Dépendances
+vendor/
+node_modules/
+
+# Fichiers de configuration sensibles
+.env
+config.local.php
+
+# Base de données
+*.sql
+db/*.sqlite
+
+# Uploads utilisateurs (si les vrais fichiers uploadés ne doivent pas être versionnés)
+public/uploads/*
+!public/uploads/index.html
+!public/uploads/.gitkeep
+
+# Logs et cache
+*.log
+cache/
+temp/
+
+# Éditeurs
+.idea/
+*.sublime-workspace
+.vscode/
